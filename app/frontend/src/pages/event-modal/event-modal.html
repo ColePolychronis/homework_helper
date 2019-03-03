@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Event Details</ion-title>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content>
+  <ion-list overflow-scroll="true">
+    <ion-item>
+      <ion-input type="text" placeholder="Title" [(ngModel)]="event.title"></ion-input>
+    </ion-item>
+ 
+    <ion-item>
+      <ion-label>Date Assigned</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Date Due</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
+    </ion-item>
+ 
+    <!-- <ion-item>
+      <ion-label>All Day?</ion-label>
+      <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
+    </ion-item> -->
+
+    <ion-item>
+      <ion-label>How confident are you about this assignment?</ion-label>
+      <ion-range min="1" max="5" step="1" snaps="true" [(ngModel)]="event.confidence">
+        <ion-label range-left>Not Confident</ion-label>
+        <ion-label range-right>Very Confident</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Will this assignment be harder or easier than usual?</ion-label>
+      <ion-range min="1" max="5" step="1" snaps="true" [(ngModel)]="event.easyHard">
+        <ion-label range-left>Much Easier</ion-label>
+        <ion-label range-right>Much Harder</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Expected Completion Time (hour:min)</ion-label>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH :mm" [(ngModel)]="event.timeCompletion"></ion-datetime>
+        <!-- <input mbsc-number [mbsc-options]="step:1, min:0, max:100"></input> -->
+    </ion-item>
+
+  </ion-list>
+ 
+  <button ion-button full icon-left (click)="save()">
+    <ion-icon name="checkmark"></ion-icon> Add Event
+  </button>
+</ion-content>

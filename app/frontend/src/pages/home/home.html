@@ -1,0 +1,38 @@
+<ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+	<ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+		<ion-item *ngFor="let event of selectedDate?.events" text-wrap> 
+			<span class="event-detail"> : {{event.user}} |  {{event.title}} </span>
+		</ion-item>
+		<ion-item *ngIf="selectedDate?.events.length==0">
+			<div class="no-events-label">{{noEventsLabel}}</div>
+		</ion-item>
+	</ion-list>
+</ng-template>
+
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      {{ viewTitle }}
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addEvent()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content>
+  <calendar 
+        [monthviewEventDetailTemplate]="template"
+        [eventSource]="eventSource"
+        [calendarMode]="calendar.mode"
+        [currentDate]="calendar.currentDate"
+        (onEventSelected)="onEventSelected($event)"
+        (onTitleChanged)="onViewTitleChanged($event)"
+        (onTimeSelected)="onTimeSelected($event)"
+        step="30"
+        class="calendar">
+  </calendar>
+</ion-content>
