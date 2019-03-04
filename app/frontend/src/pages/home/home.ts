@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { NavController, ModalController, AlertController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 
@@ -55,17 +55,37 @@ export class HomePage implements OnInit{
         console.log("Event")
         console.log(eventData)
         this.eventServ.newEvent(eventData).subscribe((res => {
-          let events = this.eventSource;
+          // Pulls events from Database
+          this.eventServ.getEvents().subscribe((res) => {
+            let events = this.eventSource;
+            for(let result in res){
+              // fixes eventData to have Dates instead of strings
+              let eventData = res[result];
+              if(eventData.user == this.navParams.data["user"]){
+                eventData.startTime = new Date(eventData.startTime);
+                eventData.endTime = new Date(eventData.endTime);
+                events.push(eventData);
+              }
+            }
+            this.eventSource = []
+            setTimeout(() => {
+              this.eventSource = events;
+            })
+          });
+
+        }));
+      }
+    });
+  }
+
+  processEvent(eventData) {
+    let events = this.eventSource;
           events.push(eventData);
           this.eventSource = [];
 
           setTimeout(() => {
             this.eventSource = events;
           });
-          
-        }));
-      }
-    });
   }
 
   processTime(time){

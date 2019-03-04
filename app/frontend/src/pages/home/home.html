@@ -1,7 +1,7 @@
 <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
 	<ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
 		<ion-item *ngFor="let event of selectedDate?.events" text-wrap (click)="onEventSelected(event)"> 
-			<span class="event-detail"> : {{event.user}} |  {{event.title}} </span>
+			<span class="event-detail"> {{event.title}} : <span style="color:#e4a548;">{{event.predictedTime}} Minutes</span> </span>
 		</ion-item>
 		<ion-item *ngIf="selectedDate?.events.length==0">
 			<div class="no-events-label">{{noEventsLabel}}</div>

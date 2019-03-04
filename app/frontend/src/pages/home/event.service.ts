@@ -21,10 +21,13 @@ export class EventService {
 
     public newEvent(newEv: event){
         return this.http.post(`${SERVER_URL}events`, newEv).map((res) => {
+            console.log("Event Prediciton")
+            console.log(res.json())
             this.getEvents().subscribe((res) => {
+                console.log("EVENTS")
                 console.log(res)
             });
-            return res;
+            return res.json();
         });
     }
 

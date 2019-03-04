@@ -10,15 +10,6 @@ import { event } from '../home/types';
   templateUrl: 'event-modal.html',
 })
 export class EventModalPage {
- 
-  // event = { 
-  //   startTime: new Date().toISOString(), 
-  //   endTime: new Date().toISOString(), 
-  //   // allDay: false 
-  //   confidence: 3,
-  //   easyHard: 3,
-  //   timeCompleteion: new Date().toISOString()
-  // };
 
   // assigns = new classAssigns();
   classes = ["Mathematics", "Language & Literature", "Science", "Foreign Language", "Social Studies"];
