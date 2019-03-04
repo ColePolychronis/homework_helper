@@ -20,12 +20,22 @@ export class EventModalPage {
   //   timeCompleteion: new Date().toISOString()
   // };
 
+  // assigns = new classAssigns();
+  classes = ["Mathematics", "Language & Literature", "Science", "Foreign Language", "Social Studies"];
+  assigns = {
+    "Mathematics": ["Homework", "Online Activity", "Reading", "Takehome Test", "Study Guide", "Presentation"],
+    "Language & Literature": ["Reading", "Writing Prompt", "Essay", "Presentation"],
+    "Science": ["Homework", "Lab", "Reading", "Takehome Test", "Study Guide", "Presentation"],
+    "Foreign Language": ["Reading", "Translation Activity", "Homework", "Interview"],
+    "Social Studies": ["Homework", "Reading", "Essay", "Presentation"]
+  }
+  classSelected = 0;
+
   event = new event();
 
   minDate = new Date().toISOString();
  
   constructor(public navCtrl: NavController, private navParams: NavParams, public viewCtrl: ViewController) {
-    console.log(navParams.data)
     let preselectedDate = moment(this.navParams.get('selectedDay')).format();
     this.event.startTime = preselectedDate;
     this.event.endTime = preselectedDate;

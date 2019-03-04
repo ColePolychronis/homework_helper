@@ -31,7 +31,13 @@ export class event {
     easyHard: number = 3;
     title: string = "";
     user: string = "";
+    assignClass = "";
+    assignType = "";
+
+    easyHardExpected: number =3;
+    actualTime = 0;
 }
+
 // startTime: new Date().toISOString(), 
 //     endTime: new Date().toISOString(), 
 //     // allDay: false 

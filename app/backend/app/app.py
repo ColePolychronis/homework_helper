@@ -46,12 +46,20 @@ def events() -> List[Dict]:
     cursor = connection.cursor()
     cursor.execute('SELECT * FROM events')
     results = {}
-    for index, (user, title, startTime, endTime) in enumerate(cursor):
+    # for index, (user, title, startTime, endTime) in enumerate(cursor):
+    for index, (user, title, startTime, endTime, estimatedTime, confidence, easyHard, assignClass, assignType, easyHardExpected, actualTime) in enumerate(cursor):
         results[index] = {
             "user": user,
             "title": title,
             "startTime": startTime,
-            "endTime": endTime
+            "endTime": endTime,
+            "estimatedTime": estimatedTime,
+            "confidence": confidence,
+            "easyHard": easyHard,
+            "assignClass": assignClass,
+            "assignType": assignType,
+            "easyHardExpected": easyHardExpected,
+            "actualTime": actualTime
         }
     cursor.close()
     connection.close()
@@ -99,10 +107,29 @@ def addEvent() -> str:
     title = parameters['title']
     startTime = parameters['startTime']
     endTime = parameters['endTime']
+    estimatedTime = parameters['timeCompletion']
+    confidence = parameters['confidence']
+    easyHard = parameters['easyHard']
+    assignClass = parameters['assignClass']
+    assignType = parameters['assignType']
+    easyHardExpected = parameters['easyHardExpected']
+    actualTime = parameters['actualTime']
 
-
-    sql = "INSERT INTO events values(%s, %s, %s, %s)"
-    val = (user, title, startTime, endTime)
+# CREATE TABLE events (
+#   user VARCHAR(25),
+#   title VARCHAR(25),
+#   startTime VARCHAR(100),
+#   endTime VARCHAR(100),
+#   estimatedTime FLOAT(10, 2),
+#   confidence INT,
+#   easyHard INT,
+#   assignClass VARCHAR(100),
+#   assignType VARCHAR(100),
+#   easyHardExpected INT,
+#   actualTime FLOAT(10, 2)
+# );
+    sql = "INSERT INTO events values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (user, title, startTime, endTime, estimatedTime, confidence, easyHard, assignClass, assignType, easyHardExpected, actualTime)
 
     config = db_config;
     connection = mysql.connector.connect(**config)
@@ -113,6 +140,7 @@ def addEvent() -> str:
     connection.close()
 
     return "Events retrieved"
+    # return jsonify({'accuracy': round(clf.score(X, y) * 100, 2)})
 
 
 

@@ -1,6 +1,6 @@
 <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
 	<ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-		<ion-item *ngFor="let event of selectedDate?.events" text-wrap> 
+		<ion-item *ngFor="let event of selectedDate?.events" text-wrap (click)="onEventSelected(event)"> 
 			<span class="event-detail"> : {{event.user}} |  {{event.title}} </span>
 		</ion-item>
 		<ion-item *ngIf="selectedDate?.events.length==0">
@@ -24,8 +24,7 @@
 </ion-header>
  
 <ion-content>
-  <calendar 
-        [monthviewEventDetailTemplate]="template"
+  <calendar [monthviewEventDetailTemplate]="template"
         [eventSource]="eventSource"
         [calendarMode]="calendar.mode"
         [currentDate]="calendar.currentDate"

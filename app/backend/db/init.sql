@@ -10,7 +10,14 @@ CREATE TABLE events (
   user VARCHAR(25),
   title VARCHAR(25),
   startTime VARCHAR(100),
-  endTime VARCHAR(100)
+  endTime VARCHAR(100),
+  estimatedTime FLOAT(10, 2),
+  confidence INT,
+  easyHard INT,
+  assignClass VARCHAR(100),
+  assignType VARCHAR(100),
+  easyHardExpected INT,
+  actualTime FLOAT(10, 2)
 );
 
 INSERT INTO login_cred values('cole', 'colespass');

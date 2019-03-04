@@ -50,35 +50,30 @@ export class HomePage implements OnInit{
         let eventData = data;
         eventData.startTime = new Date(eventData.startTime);
         eventData.endTime = new Date(eventData.endTime);
-        eventData["user"] = this.navParams.data["user"];
+        eventData.user = this.navParams.data["user"];
+        eventData.timeCompletion = this.processTime(eventData.timeCompletion)
+        console.log("Event")
+        console.log(eventData)
         this.eventServ.newEvent(eventData).subscribe((res => {
           let events = this.eventSource;
           events.push(eventData);
           this.eventSource = [];
+
           setTimeout(() => {
             this.eventSource = events;
           });
+          
         }));
-        
-
-
-        // let eventData = data;
-        
-        // eventData.startTime = new Date(data.startTime);
-        // // eventData.startTime = new Date(data.endTime);
-        // eventData.endTime = new Date(data.endTime);
- 
-        // let events = this.eventSource;
-        // events.push(eventData);
-        // this.eventSource = [];
-        // setTimeout(() => {
-        //   this.eventSource = events;
-        // });
       }
     });
   }
-  test(){
-    console.log("DId test HELP")
+
+  processTime(time){
+    let colonInd = time.indexOf(":");
+    let hours = Number(time.substring(0, colonInd));
+    let mins = Number(time.substring(colonInd+1));
+    hours = hours*60;
+    return hours + mins;
   }
 
   onViewTitleChanged(title) {

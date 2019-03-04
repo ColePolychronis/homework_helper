@@ -14,6 +14,23 @@
     <ion-item>
       <ion-input type="text" placeholder="Title" [(ngModel)]="event.title"></ion-input>
     </ion-item>
+
+    <ion-item>
+      <ion-label>What kind of class is this for?</ion-label>
+      <ion-select  [(ngModel)]="event.assignClass" [(ngModel)]="classSelected">
+          <ion-option #classType *ngFor="let key of classes" [value] = "key">{{key}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <div *ngIf="classSelected != 0">
+      <ion-item >
+        <ion-label>What kind of assignment is this?</ion-label>
+        <ion-select  [(ngModel)]="event.assignType">
+            <ion-option *ngFor="let key of assigns[classSelected]" [value] = "key">{{key}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    
  
     <ion-item>
       <ion-label>Date Assigned</ion-label>
