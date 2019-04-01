@@ -1,10 +1,34 @@
 <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
-	<ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-		<ion-item *ngFor="let event of selectedDate?.events" text-wrap (click)="onEventSelected(event)"> 
-			<span class="event-detail"> {{event.title}} : <span style="color:#e4a548;">{{event.predictedTime}} Minutes</span> </span>
-		</ion-item>
+    <div class="row">
+        <div class="col text-center">
+            <!-- <button ion-button (click)="logHours()">
+              Log Hours for {{neatDate(selectedDate)}}
+            </button> -->
+            Assignments for {{neatDate(selectedDate)}}
+        </div>
+    </div>
+  
+  
+  <ion-list class="event-detail-container" has-bouncing="true" *ngIf="showEventDetail" overflow-scroll="false">
+		<ion-item *ngFor="let event of selectedDate?.events" text-wrap> 
+      <!-- <span class="event-detail"> {{event.title}} : <span style="color:#e4a548;">{{event.predictedTime}} Minutes</span> </span> -->
+      <div ion-content class="flex-col" (click)="onEventSelected(event)">
+          <span class="event-detail">Assignment: {{event.title}}</span>
+          <br>
+          <span class="event-detail">Predicted Time: <span style="color:#e4a548;">{{neatTime(event.predictedTime)}} </span></span>   
+          <br>
+          <span class="event-detail">Time Spent: {{neatTime(event.timeSpent)}}</span> 
+      </div>
+      <!-- <div class="flex-col alarm-button" item-end>
+          <ion-label>Expected Completion Time (hour:min)</ion-label>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH :mm" [(ngModel)]="event.timeCompletion"></ion-datetime>
+      </div> -->
+        
+
+    </ion-item>
+    
 		<ion-item *ngIf="selectedDate?.events.length==0">
-			<div class="no-events-label">{{noEventsLabel}}</div>
+			<div class="no-events-label">No Assignments</div>
 		</ion-item>
 	</ion-list>
 </ng-template>

@@ -34,7 +34,7 @@ def clients() -> List[Dict]:
     cursor.execute('SELECT * FROM login_cred')
     # results = [{us: pa} for (us, pa) in cursor]
     results = {}
-    for (us, pa) in cursor:
+    for (usid, us, pa) in cursor:
         results[us] = pa
     cursor.close()
     connection.close()
@@ -48,7 +48,7 @@ def events() -> List[Dict]:
     cursor.execute('SELECT * FROM events')
     results = {}
     # for index, (user, title, startTime, endTime) in enumerate(cursor):
-    for index, (user, title, startTime, endTime, estimatedTime, confidence, easyHard, assignClass, assignType, easyHardExpected, actualTime, predictedTime) in enumerate(cursor):
+    for index, (user, title, startTime, endTime, estimatedTime, confidence, easyHard, assignClass, assignType, actualTime, predictedTime, completed, timeSpent) in enumerate(cursor):
         results[index] = {
             "user": user,
             "title": title,
@@ -59,9 +59,10 @@ def events() -> List[Dict]:
             "easyHard": easyHard,
             "assignClass": assignClass,
             "assignType": assignType,
-            "easyHardExpected": easyHardExpected,
             "actualTime": actualTime,
-            "predictedTime": predictedTime
+            "predictedTime": predictedTime,
+            "completed": completed,
+            "timeSpent": timeSpent
         }
     cursor.close()
     connection.close()
@@ -102,6 +103,30 @@ def addUser() -> str:
 def eventsIndex() -> str:
     return json.dumps(events())
 
+@app.route('/api/updateEvent', methods=['POST'])
+def updateEvent() -> str:
+    parameters = request.get_json()
+    user = parameters['user']
+    title = parameters['title']
+    completed = parameters['completed']
+    timeSpent = parameters['timeSpent']
+
+    config = db_config;
+    connection = mysql.connector.connect(**config)
+    cursor = connection.cursor()
+    sql = "UPDATE events SET completed=%s, timeSpent=timeSpent+%s where user=%s AND title=%s"
+    val = (completed, timeSpent, user, title)
+    cursor.execute(sql, val);
+    connection.commit();
+    cursor.close()
+    connection.close()
+
+    return json.dumps(events())
+
+
+
+
+
 @app.route('/api/events', methods=['POST'])
 def addEvent() -> str:
     parameters = request.get_json()
@@ -114,13 +139,14 @@ def addEvent() -> str:
     easyHard = parameters['easyHard']
     assignClass = parameters['assignClass']
     assignType = parameters['assignType']
-    easyHardExpected = parameters['easyHardExpected']
     actualTime = parameters['actualTime']
     # predictedTime = calculateAssignTime(parameters)
     predictedTime = calculateAssignTime(parameters)
+    completed = parameters['completed']
+    timeSpent = parameters['timeSpent']
 
-    sql = "INSERT INTO events values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    val = (user, title, startTime, endTime, estimatedTime, confidence, easyHard, assignClass, assignType, easyHardExpected, actualTime, predictedTime)
+    sql = "INSERT INTO events values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (user, title, startTime, endTime, estimatedTime, confidence, easyHard, assignClass, assignType, actualTime, predictedTime, completed, timeSpent)
 
     config = db_config;
     connection = mysql.connector.connect(**config)
@@ -205,15 +231,6 @@ def calculateAssignTime(parameters) -> str:
         else:
             name = "assign_type_" + at
             assignmentDict[name] = 1
-
-    # process easyHardExpected
-    easyHardExpected = parameters['easyHardExpected']
-    for i in range(1, 6):
-        name = "hard_easy_expected_" + str(i)
-        if i == easyHardExpected:
-            assignmentDict[name] = 1
-        else:
-            assignmentDict[name] = 0
 
     
     prediction = 0

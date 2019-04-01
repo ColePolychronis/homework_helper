@@ -13,11 +13,12 @@ export class event {
     user: string = "";
     assignClass = "";
     assignType = "";
-
-    easyHardExpected: number =3;
     actualTime = 0;
 
     predictedTime = 0;
     pt_hr = 0;
     pt_min = 0;
+
+    completed: boolean = false;
+    timeSpent: number = 0;
 }

@@ -13,7 +13,9 @@ import { LoginPage } from '../pages/login/login';
 import { LoginService } from '../pages/login/login.service';
 import { HttpModule } from '@angular/http';
 
-import { EventService } from '../pages/home/event.service'
+import { EventService } from '../pages/home/event.service';
+
+// import { EventLogModalPage } from '../pages/event-log-modal/event-log-modal';
 
 @NgModule({
   declarations: [

@@ -2,8 +2,10 @@ CREATE DATABASE homeworkhelper;
 use homeworkhelper;
 
 CREATE TABLE login_cred (
+    usid INT NOT NULL AUTO_INCREMENT,
     us VARCHAR(25),
-    pa VARCHAR(25)
+    pa VARCHAR(25),
+    PRIMARY KEY (usid)
 );
 
 CREATE TABLE events (
@@ -16,14 +18,15 @@ CREATE TABLE events (
   easyHard INT,
   assignClass VARCHAR(100),
   assignType VARCHAR(100),
-  easyHardExpected INT,
   actualTime FLOAT(10, 2),
-  predictedTime FLOAT(10,2)
+  predictedTime FLOAT(10,2),
+  completed BOOLEAN,
+  timeSpent FLOAT(10, 2)
 );
 
-INSERT INTO login_cred values('cole', 'colespass');
-INSERT INTO login_cred values('jenny', 'jennyspass');
-INSERT INTO login_cred values('william', 'williamspass');
+INSERT INTO login_cred(us, pa) values('cole', 'colespass');
+INSERT INTO login_cred(us, pa) values('jenny', 'jennyspass');
+INSERT INTO login_cred(us, pa) values('william', 'williamspass');
 
 
 
