@@ -80,7 +80,7 @@ def addUser() -> str:
     u = parameters['username']
     p = parameters['password']
     # val = "(\'" + u + "\', \'" + p + "\')"
-    sql = "INSERT INTO login_cred values(%s, %s)"
+    sql = "INSERT INTO login_cred(us, pa) values(%s, %s)"
     val = (u, p)
 
     config = db_config;

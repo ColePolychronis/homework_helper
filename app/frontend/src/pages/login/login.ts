@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Alert, AlertController } from 'ionic-angular';
+import { NavController, ModalController, NavParams, Alert, AlertController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { LoginService } from '../login/login.service';
 import { newCredential } from '../home/types';
@@ -12,7 +12,7 @@ import { newCredential } from '../home/types';
 export class LoginPage {
   success: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loginServ: LoginService, public alert: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loginServ: LoginService, public alert: AlertController, public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -44,14 +44,18 @@ export class LoginPage {
   }
 
   addUser() {
-    let params: newCredential = new newCredential();
-    this.loginServ.newUser(params);
-    let alert = this.alert.create({
-      title: 'Confirmation',
-      subTitle: 'You have been registered. U: ' + params['username'] + 'P: ' + params['password'],
-      buttons: ['Okay']
+    let modal = this.modalCtrl.create('CredentialModalPage');
+    modal.present()
+    modal.onDidDismiss(data =>{
+      if(data){
+        console.log("THERE IS DATA")
+        let newUser = new newCredential;
+        newUser.username = data[0];
+        newUser.password = data[1];
+        this.loginServ.newUser(newUser);
+      }
+      
     });
-    alert.present();
   }
 
   

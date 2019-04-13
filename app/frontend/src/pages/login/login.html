@@ -14,17 +14,44 @@
 
 
 <ion-content padding>
-  <form class="center">
-    <br/>
-    Username: <input #email type="text"/>
-    <br/>
-    Password: <input #password type="password"/>
-    <br/>
-    <button (click)="login(email.value, password.value)">Submit</button>
-  </form>
-  <!-- <p>Add User</p> -->
-  <p></p>
-  <form class="center">
-    <button (click)="addUser()">Sign Up</button>
-  </form>
+  <!-- <form class="center"> -->
+
+  <ion-grid style="height: 100%">
+      <ion-row justify-content-center align-items-center style="height: 60%">
+          <ion-card text-center>
+              <br>
+              Welcome back!
+              <br>
+              <br>
+              <ion-item>
+                <ion-label>Username:</ion-label>
+                <ion-input type="text" placeholder="username" #email></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label>Password:</ion-label>
+                <ion-input type="password" placeholder="password" #password></ion-input>
+              </ion-item>
+              <button ion-button full icon-left (click)="login(email.value, password.value)">
+                Login
+              </button>
+            </ion-card>
+      </ion-row>
+
+      <ion-row justify-content-center align-items-center style="height: 10%">
+        <ion-card text-center>
+          <br>
+          Don't have an account? Sign up below!
+          <br>
+          <br>
+          <button ion-button full icon-left (click)="addUser()">
+            Sign Up
+          </button>
+        </ion-card>    
+      </ion-row>
+  </ion-grid>
+  
+  <!-- </form> -->
+  
+
+
 </ion-content>

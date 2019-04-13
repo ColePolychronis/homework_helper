@@ -10,7 +10,52 @@
 </ion-header>
 
 <ion-content>
-  <ion-list overflow-scroll="false">
+    <ion-grid style="height: 100%">
+        <ion-row justify-content-center align-items-center style="height: 60%">
+            <ion-card text-center>
+                <ion-list overflow-scroll="false">
+                    <br>
+                      To mark an assignment as completed, click on the complete assignment button below.
+                    <br>
+                    <br>
+
+                    <ion-item>
+                        <button ion-button full (click)="completeAndSave()">
+                            Complete Assignment
+                        </button>
+                    </ion-item>
+                </ion-list>
+            </ion-card>
+        </ion-row>
+
+        <ion-row justify-content-center align-items-center style="height: 10%">
+            <ion-card text-center>
+                <ion-list overflow-scroll="false">
+                    <br>
+                      To log hours spent on an incomplete assignment, enter in the amount of time you spent and then click the add hours button below.
+                    <br>
+                    <br>
+                    
+                    <ion-item>
+                      <ion-label>Log Hours (hour:min)</ion-label>
+                      <ion-datetime displayFormat="HH:mm" pickerFormat="HH :mm" [(ngModel)]="timeSpent"></ion-datetime>
+                    </ion-item>
+              
+                    <ion-item>
+                      <button ion-button full (click)="save()">
+                        <ion-icon name="checkmark"></ion-icon> Log Hours
+                      </button>
+                    </ion-item>
+                </ion-list>
+            </ion-card>
+        </ion-row>
+    </ion-grid>
+
+  
+
+  
+
+  <!-- <ion-list overflow-scroll="false">
       <p>
         To mark an assignment as completed, click on the complete assignment button below.
       </p>
@@ -19,8 +64,8 @@
           <button ion-button (click)="completeAndSave()">
               Complete Assignment
           </button>
-      </ion-item>
-
+      </ion-item> -->
+    <!-- <ion-list overflow-scroll="false">
       <p>
         To log hours spent on an incomplete assignment, enter in the amount of time you spent and then click the add hours button below.
       </p>
@@ -35,7 +80,7 @@
           <ion-icon name="checkmark"></ion-icon> Add Event
         </button>
       </ion-item>
-  </ion-list>
+  </ion-list> -->
   <!-- <button ion-button full icon-left (click)="save()">
     <ion-icon name="checkmark"></ion-icon> Add Event
   </button> -->
