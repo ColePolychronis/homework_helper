@@ -2,8 +2,12 @@ from typing import List, Dict
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
+
 import json
 import os
+
+import pystan
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -16,16 +20,7 @@ db_config = {
         'database': 'homeworkhelper'
     }
 
-# def favorite_colors() -> List[Dict]:
-#     config = db_config;
-#     connection = mysql.connector.connect(**config)
-#     cursor = connection.cursor()
-#     cursor.execute('SELECT * FROM favorite_colors')
-#     results = [{name: color} for (name, color) in cursor]
-#     cursor.close()
-#     connection.close()
-
-#     return results
+model_params = {"class_type_Science": 13.0027833735946, "confidence_1": 14.592245652315391, "confidence_3": 3.07309494058943, "confidence_2": 5.891696684957204, "confidence_5": -8.887425741559039, "confidence_4": -1.2154584434764064, "user_time_est": 1.0413421026894385, "assign_type_Reading": -11.352713365761808, "assign_type_Lab": 3.6895321896676827, "assign_type_Writing_Prompt": -2.9059475007341793, "class_type_Mathematics": 23.076564912766408, "class_type_Foreign_Language": 7.740519912076476, "assign_type_Interview": -11.075830407586125, "assign_type_Translation_Activity": -0.6889565327727634, "class_type_Social_Studies": -14.16149001147156, "hard_easy_4": 10.870489972535195, "hard_easy_5": 14.791488024934422, "hard_easy_2": -1.8619093231383756, "hard_easy_3": 2.9518669375842084, "assign_type_Study_Guide": 9.153266646585447, "assign_type_Online_Activity": 5.663135767490296, "assign_type_Takehome_Test": 20.980678105703362, "hard_easy_1": -7.042163268955801, "assign_type_Homework": -5.672573529004104, "assign_type_Presentation": 13.810536876549996, "assign_type_Essay": 24.04559357371683, "hard_easy_expected_4": -1.5718701653593787, "hard_easy_expected_5": -6.6229289150490445, "hard_easy_expected_2": 9.103396511599943, "hard_easy_expected_3": 2.9843261170165434, "hard_easy_expected_1": 17.650870636688914, "class_type_Language_&_Literature": -8.487684916023488}
 
 def clients() -> List[Dict]:
     config = db_config;
@@ -237,11 +232,99 @@ def calculateAssignTime(parameters) -> str:
 
     # with open(os.path.join(os.path.dirname(__file__), 'model.json')) as f:
     #     model_params = json.load(f)
-    model_params = {"class_type_Science": 13.0027833735946, "confidence_1": 14.592245652315391, "confidence_3": 3.07309494058943, "confidence_2": 5.891696684957204, "confidence_5": -8.887425741559039, "confidence_4": -1.2154584434764064, "user_time_est": 1.0413421026894385, "assign_type_Reading": -11.352713365761808, "assign_type_Lab": 3.6895321896676827, "assign_type_Writing_Prompt": -2.9059475007341793, "class_type_Mathematics": 23.076564912766408, "class_type_Foreign_Language": 7.740519912076476, "assign_type_Interview": -11.075830407586125, "assign_type_Translation_Activity": -0.6889565327727634, "class_type_Social_Studies": -14.16149001147156, "hard_easy_4": 10.870489972535195, "hard_easy_5": 14.791488024934422, "hard_easy_2": -1.8619093231383756, "hard_easy_3": 2.9518669375842084, "assign_type_Study_Guide": 9.153266646585447, "assign_type_Online_Activity": 5.663135767490296, "assign_type_Takehome_Test": 20.980678105703362, "hard_easy_1": -7.042163268955801, "assign_type_Homework": -5.672573529004104, "assign_type_Presentation": 13.810536876549996, "assign_type_Essay": 24.04559357371683, "hard_easy_expected_4": -1.5718701653593787, "hard_easy_expected_5": -6.6229289150490445, "hard_easy_expected_2": 9.103396511599943, "hard_easy_expected_3": 2.9843261170165434, "hard_easy_expected_1": 17.650870636688914, "class_type_Language_&_Literature": -8.487684916023488}
 
     for key in assignmentDict:
         prediction += model_params[key]*assignmentDict[key]
     return prediction
+
+
+@app.route('/api/triggerUpdate', methods=['GET'])
+def updateModel() -> str:
+    model= """
+    data {
+        int<lower=0> J;
+        int<lower=0> N;
+        int<lower=0> K;
+        int<lower=0, upper=J> students[N];
+        matrix[N,K] X;
+        vector[N] y;
+    }
+    parameters {
+        vector[J] groupPred;
+        vector[K] beta;
+        real mu_a;
+        real<lower=0> sigma_a;
+        real<lower=0> sigma_y;
+    }
+    model {
+        mu_a ~ normal(0, 15);
+        groupPred ~ normal(mu_a, sigma_a);
+        y ~ normal(X*beta + groupPred[students], sigma_y);
+    }
+    """
+
+    config = db_config;
+    connection = mysql.connector.connect(**config)
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM events')
+    records = []
+    # for index, (user, title, startTime, endTime) in enumerate(cursor):
+    for (user, title, startTime, endTime, estimatedTime, confidence, easyHard, assignClass, assignType, actualTime, predictedTime, completed, timeSpent) in cursor:
+        if(completed):
+            records.append([user, title, estimatedTime, confidence, easyHard, assignClass, assignType, actualTime, predictedTime])
+    cursor.close()
+    connection.close()
+
+    df = pd.DataFrame(records)
+    df.columns = ['user', 'title', 'estimated_time', 'confidence', 'hard_easy', 'class_type', 'assign_type', 'actual_time', 'predicted_time']
+    df['class_type'] = df['class_type'].str.replace(' ', '_') 
+    df['assign_type'] = df['assign_type'].str.replace(' ', '_') 
+    df = pd.get_dummies(df, columns=["class_type", "assign_type", "hard_easy", "confidence"])
+
+    studentNames = df.user.unique()
+    student_lookup = dict(zip(studentNames, range(len(df))))
+    stud = df.user.replace(student_lookup).values
+
+    df = df.drop('user', axis=1).drop('title', axis=1).drop('predicted_time', axis=1)
+    response = df['actual_time']
+    df = df.drop('actual_time', axis=1)
+
+    modelData_mat = pd.DataFrame.as_matrix(df)
+    response = list(response)
+
+    data = {
+        'J': len(studentNames),
+        'N': len(df),
+        'K':len(df.columns),
+        'students': stud+1,
+        'X': modelData_mat,
+        'y': response
+    }
+
+    sm = pystan.StanModel(model_code=model)
+    fit = sm.sampling(data=data, iter=1000, chains=2, warmup=100, seed=101)
+
+    # extract parameter estimated from fit
+    params = []
+    for row in fit.get_posterior_mean():
+        params.append(sum(row)/len(row))
+    params = params[20:-4]
+
+    # create a dictionary with parameter name and estimate - which we convert to JSON
+    edu_params_estimate = {}
+    for index, param in enumerate(df.columns):
+        edu_params_estimate[param]= params[index]
+
+    # add group predictors to dictionary
+    # groupPreds = []
+    # for row in fit.get_posterior_mean():
+    #     groupPreds.append(sum(row)/len(row))
+    # groupPreds = groupPreds[:20]
+
+    # for index, pred in enumerate(groupPreds):
+    #     edu_params_estimate['groupPred_' + str(index)] = pred
+    model_params = edu_params_estimate
+    return str(edu_params_estimate)
 
 
 

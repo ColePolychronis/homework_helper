@@ -4,6 +4,9 @@ EXPOSE 5000
 
 WORKDIR /app
 
+RUN pip install --trusted-host pypi.python.org pystan
+RUN pip install --trusted-host pypi.python.org pandas
+
 COPY requirements.txt /app
 RUN pip install -r requirements.txt
 
