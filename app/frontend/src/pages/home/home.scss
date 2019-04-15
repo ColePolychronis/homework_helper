@@ -2,6 +2,62 @@ page-home {
     
 }
 
-// .description em {
-//     color: #ffa500;
+.circle-responsive-heavy {
+    background: rgb(230, 133, 133);
+    border-radius: 50%;
+    height: 0;
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.circle-responsive-medium {
+    background: rgb(212, 207, 136);
+    border-radius: 50%;
+    height: 0;
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.circle-responsive-light {
+    background: rgb(125, 187, 116);
+    border-radius: 50%;
+    height: 0;
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.circle-content {
+    color: #fff;
+    float: left;
+    line-height: 1;
+    margin-top: -0.5em;
+    padding-top: 50%;
+    text-align: center;
+    width: 100%;
+}
+
+.card .list .item {
+    border-bottom: 1px solid #ccd2dd;
+}
+
+// .badge {
+//     height: 10px;
+//     width: 10px;
+//     display: table-cell;
+//     text-align: center;
+//     vertical-align: middle;
+//     border-radius: 50%;
+//     background: red;
 //   }
+
+// .calendarCell {
+//     color: #fff;
+    // float: left;
+    // line-height: 1;
+    // margin-top: -0.5em;
+    // padding-top: 50%;
+    // text-align: center;
+    // width: 100%;
+//   }
+
+  

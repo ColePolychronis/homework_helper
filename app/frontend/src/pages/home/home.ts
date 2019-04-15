@@ -65,6 +65,13 @@ export class HomePage implements OnInit{
               // fixes eventData to have Dates instead of strings
               let eventData = res[result];
               if(eventData.user == this.navParams.data["user"] && eventData.completed != 1){
+                //temp
+                if(this.navParams.data["user"] == "cole"){
+                  eventData.predictedTime = 1.1*eventData.predictedTime; 
+                }
+                if(this.navParams.data["user"] == "jenny"){
+                  eventData.predictedTime = 0.9*eventData.predictedTime; 
+                }
                 eventData.startTime = new Date(eventData.startTime);
                 eventData.endTime = new Date(eventData.endTime);
                 events.push(eventData);
@@ -138,6 +145,7 @@ export class HomePage implements OnInit{
   }
 
   neatDate(dt){
+    console.log(dt)
     var day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -162,5 +170,15 @@ export class HomePage implements OnInit{
   //   // }
   //   this.navCtrl.push(HoursLogPage, {'selectedDay': this.selectedDay, 'user': this.navParams['user']});
   // }
+
+  dayTotalTime(calendarDay){
+    let totalTime = 0
+    for(let event of calendarDay){
+      // console.log(event['endTime'].getDate()-event['startTime'].getDate() + 1)
+      totalTime += (event['predictedTime']/(event['endTime'].getDate()-event['startTime'].getDate() + 1))
+    }
+    return totalTime 
+  }
+  
 
 }
