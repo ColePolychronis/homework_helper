@@ -39,7 +39,10 @@ export class HomePage implements OnInit{
           }
           eventData.startTime = new Date(eventData.startTime);
           eventData.endTime = new Date(eventData.endTime);
-          events.push(eventData);
+          if(eventData.endTime > new Date()){
+            events.push(eventData);
+          }
+          
         }
       }
       this.eventSource = []
@@ -81,7 +84,9 @@ export class HomePage implements OnInit{
                 }
                 eventData.startTime = new Date(eventData.startTime);
                 eventData.endTime = new Date(eventData.endTime);
-                events.push(eventData);
+                if(eventData.endTime > new Date()){
+                  events.push(eventData);
+                }
               }
             }
             this.eventSource = []
@@ -131,7 +136,9 @@ export class HomePage implements OnInit{
               if(eventData.user == this.navParams.data["user"] && eventData.completed != 1){
                 eventData.startTime = new Date(eventData.startTime);
                 eventData.endTime = new Date(eventData.endTime);
-                events.push(eventData);
+                if(eventData.endTime > new Date()){
+                  events.push(eventData);
+                }
               }
             }
             this.eventSource = []
