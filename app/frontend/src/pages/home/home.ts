@@ -163,7 +163,12 @@ export class HomePage implements OnInit{
   neatTime(time){
     var hour = Math.floor(time /60);
     var min = Math.trunc(time % 60);
-    return hour + " hrs " + min + " mins"
+    if(time > 0){
+      return hour + " hrs " + min + " mins"
+    }else{
+      return 0 + " hrs " + 0 + " mins"
+    }
+    
   }
 
   // logHours(){

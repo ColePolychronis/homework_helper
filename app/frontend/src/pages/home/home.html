@@ -19,7 +19,7 @@
         <div ion-content class="flex-col" (click)="onEventSelected(event)">
             <span class="event-detail">Assignment: {{event.title}}</span>
             <br>
-            <span class="event-detail">Predicted Time: {{neatTime(event.predictedTime/(event.endTime.getDate()-event.startTime.getDate() + 1))}} </span>
+            <span class="event-detail">Predicted Time: {{neatTime(event.predictedTime/(event.endTime.getDate()-event.startTime.getDate() + 1) - event.timeSpent)}} </span>
             <br>
             <span class="event-detail">Time Spent: {{neatTime(event.timeSpent)}}</span> 
         </div>
