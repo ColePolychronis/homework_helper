@@ -57,14 +57,11 @@ export class HomePage implements OnInit{
     modal.present();
     modal.onDidDismiss(data => {
       if (data) {
-        // this.eventServ.
         let eventData = data;
         eventData.startTime = new Date(eventData.startTime);
         eventData.endTime = new Date(eventData.endTime);
         eventData.user = this.navParams.data["user"];
         eventData.timeCompletion = this.processTime(eventData.timeCompletion)
-        console.log("Event")
-        console.log(eventData)
         this.eventServ.newEvent(eventData).subscribe((res => {
           // Pulls events from Database
           this.eventServ.getEvents().subscribe((res) => {
@@ -116,13 +113,11 @@ export class HomePage implements OnInit{
     let modal = this.modalCtrl.create('EventLogModalPage', {selectedDay: this.selectedDay});
     modal.present();
     modal.onDidDismiss(data => {
-      // console.log(data)
       if(data){
         var completed = data[0];
         var timeSpent = data[1];
         event.completed = completed;
         event.timeSpent = this.processTime(String(timeSpent));
-        // console.log(event)
 
         this.eventServ.updateEvent(event).subscribe((res => {
           // Pulls events from Database
@@ -159,7 +154,6 @@ export class HomePage implements OnInit{
   }
 
   neatDate(dt){
-    console.log(dt)
     var day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -178,22 +172,9 @@ export class HomePage implements OnInit{
     
   }
 
-  // logHours(){
-  //   // var targets = this.eventSource;
-  //   // console.log(targets)
-  //   // var passed = [];
-  //   // for (let t of targets){
-  //   //   if (this.selectedDay.getTime() >= t.startTime.getTime() && this.selectedDay.getTime() <= t.endTime.getTime()){
-  //   //     passed.push(t)
-  //   //   }
-  //   // }
-  //   this.navCtrl.push(HoursLogPage, {'selectedDay': this.selectedDay, 'user': this.navParams['user']});
-  // }
-
   dayTotalTime(calendarDay){
     let totalTime = 0
     for(let event of calendarDay){
-      // console.log(event['endTime'].getDate()-event['startTime'].getDate() + 1)
       totalTime += (event['predictedTime']/(event['endTime'].getDate()-event['startTime'].getDate() + 1))
     }
     return totalTime 

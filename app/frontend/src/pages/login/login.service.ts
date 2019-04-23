@@ -4,7 +4,7 @@ import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/map';
 import { newCredential } from '../home/types';
 
-const SERVER_URL: string = 'http://localhost:5000/api/';
+const SERVER_URL: string = 'http://10.0.1.14:5000/api/';
 
 @Injectable()
 export class LoginService {    

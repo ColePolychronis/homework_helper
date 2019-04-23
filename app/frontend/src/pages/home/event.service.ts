@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 // import { newCredential } from '../home/types';
 import { event }  from '../home/types';
 
-const SERVER_URL: string = 'http://localhost:5000/api/';
+const SERVER_URL: string = 'http://10.0.1.14:5000/api/';
 
 @Injectable()
 export class EventService {    
@@ -21,11 +21,7 @@ export class EventService {
 
     public newEvent(newEv: event){
         return this.http.post(`${SERVER_URL}events`, newEv).map((res) => {
-            console.log("Event Prediciton")
-            console.log(res.json())
             this.getEvents().subscribe((res) => {
-                console.log("EVENTS")
-                console.log(res)
             });
             return res.json();
         });
@@ -33,11 +29,7 @@ export class EventService {
 
     public updateEvent(ev: event){
         return this.http.post(`${SERVER_URL}updateEvent`, ev).map((res) => {
-            // console.log("Event Prediciton")
-            // console.log(res.json())
             this.getEvents().subscribe((res) => {
-                console.log("EVENTS")
-                console.log(res)
             });
             return res.json();
         });
