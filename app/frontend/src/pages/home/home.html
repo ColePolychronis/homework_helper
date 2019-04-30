@@ -1,9 +1,11 @@
+<!--
+
+  Generated template for the HomePage
+
+-->
 <ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
     <ion-card text-center>
       <div class="col text-center">
-          <!-- <button ion-button (click)="logHours()">
-            Log Hours for {{neatDate(selectedDate)}}
-          </button> -->
           <b>Assignments for {{neatDate(selectedDate)}}</b>
           <br>
           <span *ngIf="selectedDate?.events.length!=0">
@@ -23,17 +25,12 @@
             <br>
             <span class="event-detail">Time Spent: {{neatTime(event.timeSpent)}}</span> 
         </div>
-        <!-- <div class="flex-col alarm-button" item-end>
-            <ion-label>Expected Completion Time (hour:min)</ion-label>
-            <ion-datetime displayFormat="HH:mm" pickerFormat="HH :mm" [(ngModel)]="event.timeCompletion"></ion-datetime>
-        </div> -->
-          
-
       </ion-item>
       
       <ion-item *ngIf="selectedDate?.events.length==0">
         <div class="no-events-label">No Assignments</div>
       </ion-item>
+
     </ion-list>
   </ion-card>
 </ng-template>
@@ -57,12 +54,6 @@
           {{view.dates[row*7+col].label}}
       </div>    
   </div>
-
-  <!-- <div class="circle-responsive-clear" *ngIf="dayTotalTime(view.dates[row*7+col])==0">
-      <div class="circle-content">
-          {{view.dates[row*7+col].label}}
-      </div>    
-  </div> -->
 
   <div *ngIf="dayTotalTime(view.dates[row*7+col].events)==0">
       {{view.dates[row*7+col].label}}

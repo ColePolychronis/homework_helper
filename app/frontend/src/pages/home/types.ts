@@ -1,8 +1,10 @@
+// Credential Class
 export class newCredential {
-    username: string = "test";
-    password: string = "testPass";
+    username: string = "";
+    password: string = "";
 }
 
+// Event (assignment) Class
 export class event {
     startTime: string = "";
     endTime: string = "";

@@ -1,3 +1,8 @@
+<!--
+
+  Generated template for the EventModalPage
+
+-->
 <ion-header>
   <ion-navbar color="primary">
     <ion-buttons start>
@@ -30,8 +35,7 @@
         </ion-select>
       </ion-item>
     </div>
-    
- 
+
     <ion-item>
       <ion-label>Date Assigned</ion-label>
       <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
@@ -41,11 +45,6 @@
       <ion-label>Date Due</ion-label>
       <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
     </ion-item>
- 
-    <!-- <ion-item>
-      <ion-label>All Day?</ion-label>
-      <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
-    </ion-item> -->
 
     <ion-item>
       <ion-label>How confident are you about this assignment?</ion-label>
